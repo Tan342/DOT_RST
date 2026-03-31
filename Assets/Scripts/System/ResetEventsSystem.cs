@@ -1,7 +1,7 @@
 using Unity.Burst;
 using Unity.Entities;
 
-[UpdateInGroup(typeof(LateSimulationSystemGroup))]
+[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 partial struct ResetEventsSystem : ISystem
 {
     [BurstCompile]
@@ -12,5 +12,11 @@ partial struct ResetEventsSystem : ISystem
             selected.ValueRW.onSelected = false;
             selected.ValueRW.onDeselected = false;
         }
+
+        foreach (RefRW<Health> selected in SystemAPI.Query<RefRW<Health>>())
+        {
+            selected.ValueRW.onHealthChanged = false;
+        }
+
     }
 }

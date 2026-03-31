@@ -7,11 +7,8 @@ using Unity.Jobs;
 
 partial struct UnitMoverSystem : ISystem
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
 
-    }
+    public const float REACHED_TARGET_POSITION_DISTANCE = 2f;
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
@@ -36,12 +33,6 @@ partial struct UnitMoverSystem : ISystem
         //    //localTransform.ValueRW.Position += moveDirection * moveSpeed.ValueRO.value * SystemAPI.Time.DeltaTime;
         //}
     }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-
-    }
 }
 
 [BurstCompile]
@@ -51,7 +42,9 @@ public partial struct UnitMoverJob : IJobEntity
     public void Execute(ref LocalTransform localTransform, in UnitMover unitMover, ref PhysicsVelocity physicsVelocity)
     {
         float3 moveDirection = unitMover.targetPosition - localTransform.Position;
-        if (math.lengthsq(moveDirection) < 2)
+
+        float reachedTargetDistanceSq = UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE;
+        if (math.lengthsq(moveDirection) <= reachedTargetDistanceSq)
         {
             physicsVelocity.Linear = float3.zero;
             physicsVelocity.Angular = float3.zero;
