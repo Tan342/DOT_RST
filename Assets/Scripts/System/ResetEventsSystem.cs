@@ -18,5 +18,10 @@ partial struct ResetEventsSystem : ISystem
             selected.ValueRW.onHealthChanged = false;
         }
 
+        foreach (RefRW<ShootAttack> selected in SystemAPI.Query<RefRW<ShootAttack>>())
+        {
+            selected.ValueRW.onShoot.isTriggered = false;
+        }
+
     }
 }
