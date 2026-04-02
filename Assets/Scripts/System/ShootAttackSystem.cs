@@ -10,7 +10,7 @@ partial struct ShootAttackSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         EntitiesReferences entitisReferences = SystemAPI.GetSingleton<EntitiesReferences>();
-        foreach (var (localTransform, shootAttack, target, unitMover) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ShootAttack>, RefRO<Target>, RefRW<UnitMover>>())
+        foreach (var (localTransform, shootAttack, target, unitMover) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ShootAttack>, RefRO<Target>, RefRW<UnitMover>>().WithDisabled<MoveOverride>())
         {
             if(target.ValueRO.targetEntity == Entity.Null)
             {
